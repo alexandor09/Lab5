@@ -1,0 +1,143 @@
+-- для корректной работы программы откройте postgresSQL и выполните следующие команды, так же измените при необходимости
+-- логин и пароль в файле DbConfig.php
+
+
+-- Database: universityDB
+
+-- DROP DATABASE IF EXISTS "universityDB";
+
+CREATE DATABASE "universityDB"
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'Russian_Russia.1251'
+    LC_CTYPE = 'Russian_Russia.1251'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+	
+	-- Таблица ролей
+CREATE TABLE role (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+);
+
+-- Таблица пользователей
+CREATE TABLE public.user (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL,
+    role_id INTEGER REFERENCES role(id),
+    password VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL
+);
+
+-- Таблица типов продуктов
+CREATE TABLE product_type (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+);
+
+-- Таблица продуктов
+CREATE TABLE product (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    product_type_id INTEGER REFERENCES product_type(id),
+    for_women BOOLEAN,
+    description TEXT,
+    price NUMERIC(10, 2) NOT NULL
+);
+
+-- Таблица факультетов
+CREATE TABLE faculty (
+    faculty_id SERIAL PRIMARY KEY,
+    faculty_name VARCHAR(100) NOT NULL
+);
+
+-- Таблица групп
+CREATE TABLE public.group (
+    group_id SERIAL PRIMARY KEY,
+    group_number VARCHAR(50) NOT NULL,
+    faculty_id INTEGER REFERENCES faculty(faculty_id)
+);
+
+-- Таблица студентов
+CREATE TABLE student (
+    student_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    midle_name VARCHAR(50)
+);
+
+-- Таблица связь групп и студентов
+CREATE TABLE group_student (
+    group_id INTEGER REFERENCES public.group(group_id),
+    student_id INTEGER REFERENCES student(student_id),
+    PRIMARY KEY (group_id, student_id)
+);
+
+-- Таблица преподавателей
+CREATE TABLE teacher (
+    teacher_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    midle_name VARCHAR(50)
+);
+
+-- Таблица курсов преподавателей
+CREATE TABLE teacher_course_faculty (
+    teacher_id INTEGER REFERENCES teacher(teacher_id),
+    duration INTEGER NOT NULL,
+    PRIMARY KEY (teacher_id)
+);
+
+-- Таблица заказов
+CREATE TABLE public.order (
+    id SERIAL PRIMARY KEY,
+    create_date TIMESTAMP NOT NULL,
+    approved BOOLEAN NOT NULL,
+    confirmed BOOLEAN NOT NULL,
+    customer_id INTEGER REFERENCES public.user(id)
+);
+
+-- Таблица информации о заказах
+CREATE TABLE order_info (
+    order_id INTEGER REFERENCES public.order(id),
+    product_id INTEGER REFERENCES product(id),
+    amount INTEGER NOT NULL,
+    PRIMARY KEY (order_id, product_id)
+);
+
+
+
+-- Наполнение таблицы данными
+
+-- Добавление ролей
+INSERT INTO role (name) VALUES ('customer'), ('admin');
+
+-- Добавление пользователя
+INSERT INTO public.user (name, surname, role_id, password, email) 
+VALUES ('John', 'Doe', 1, 'password123', 'john.doe@example.com');
+
+-- Добавление типов продуктов
+INSERT INTO product_type (name) VALUES ('Type1'), ('Type2');
+
+-- Добавление продуктов
+INSERT INTO product (name, product_type_id, for_women, description, price) 
+VALUES ('Product1', 1, true, 'Description1', 100.00), 
+       ('Product2', 2, false, 'Description2', 150.00);
+
+-- Добавление факультетов
+INSERT INTO faculty (faculty_name) VALUES ('Faculty1'), ('Faculty2');
+
+-- Добавление групп
+INSERT INTO public.group (group_number, faculty_id) VALUES ('Group1', 1), ('Group2', 2);
+
+-- Добавление студентов
+INSERT INTO student (first_name, last_name, midle_name) 
+VALUES ('Alice', 'Smith', 'A.'), 
+       ('Bob', 'Johnson', 'B.');
+
+-- Добавление связи групп и студентов
+INSERT INTO group_student (group_id, student_id) VALUES (1, 1), (2, 2);
+
