@@ -42,14 +42,14 @@ if (isset($_POST["login"]) && isset($_POST["pwd"]) && isset($_POST["singIn"])) {
 if (
     isset($_POST["name"]) &&
     isset($_POST["surname"]) &&
-    isset($_POST["email"]) &&
     isset($_POST["pwd"]) &&
+    isset($_POST["email"]) &&
     isset($_POST["singUp"])) {
     $registration(
         htmlentities($_POST["name"]),
         htmlentities($_POST["surname"]),
-        htmlentities($_POST["email"]),
-        htmlentities($_POST["pwd"])
+        htmlentities($_POST["pwd"]),
+        htmlentities($_POST["email"])
     );
 }
 

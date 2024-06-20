@@ -1,10 +1,16 @@
 <div>
     <div class="header"></div>
+    
+    <?php
+    require '../components/header2.php';
+    ?>
     <div class="nav_bar">
         <nav>
-            <ul>
-                <li><a href="/pages/products.php">Продукты</a></li>
+            
+            <ul>                
+                <li><a href="/pages/products.php">Наши услуги</a></li>
                 <?php
+
                 session_start();
                 require_once '../DB/DBClass.php';
                 DBClass::connect();
@@ -13,7 +19,7 @@
                     echo "
                     <li><a href='/pages/user_info.php'>Информация о пользователе</a></li>
                     <li><a href='/pages/orders.php'>Заказы</a></li>
-                    <li><a href='/pages/confirmed.php'>Подтверждение</a></li>
+                    
                     <li><a href='/pages/basket.php'>Корзина</a></li>
                     ";
                 }
@@ -24,6 +30,8 @@
                         echo "<li><a href='/pages/admin.php'>Админ</a></li>";
                     }
                 ?>
+
+                
             </ul>
         </nav>
     </div>

@@ -1,10 +1,17 @@
 .header {
-    background-image: url("../images/head.png");
-    height: 400px;
+    background-image: url("../images/Upravlenie_proektami.jpg");
+    height: 40vh; /* Уменьшите высоту */
     background-repeat: no-repeat;
-    background-size: cover;
-    width: 100%;
+    background-size: 50% 100%; /* Растягивает изображение по ширине и высоте */
+    background-position: center; /* Центрирование изображения */
+    width: 100%; /* Установка ширины на 100%, чтобы занять всю ширину контейнера */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Центрирование содержимого по горизонтали */
+    margin: 0 auto; /* Центрирование элемента */
 }
+
 
 table, th, td {
     border: 1px solid;
@@ -66,4 +73,29 @@ input[type=submit] {
 }
 input[type=submit].remove_btn {
     background: #ff4d07;
+}
+
+
+.description-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: justify;
+    line-height: 1.6;
+}
+
+
+
+.description p {
+    margin-bottom: 15px; /* Отступ между абзацами */
+}
+
+.description ul {
+    padding-left: 20px; /* Отступ слева для списка */
+}
+
+.description ul li {
+    list-style-type: none; /* Убираем маркеры у списка */
+    margin-bottom: 10px; /* Отступ между элементами списка */
 }

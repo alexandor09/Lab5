@@ -8,6 +8,7 @@ class ProductEntity
     private bool $for_women;
     private string $description;
     private int $price;
+    private string $imageUrl; // Добавлено поле
 
     /**
      * @param int $id
@@ -16,8 +17,9 @@ class ProductEntity
      * @param bool $for_women
      * @param string $description
      * @param int $price
+     * @param string $imageUrl // Добавлен параметр
      */
-    public function __construct(int $id, string $name, string $product_type, bool $for_women, string $description, int $price)
+    public function __construct(int $id, string $name, string $product_type, bool $for_women, string $description, int $price, string $imageUrl)
     {
         $this->id = $id;
         $this->name = $name;
@@ -25,6 +27,7 @@ class ProductEntity
         $this->for_women = $for_women;
         $this->description = $description;
         $this->price = $price;
+        $this->imageUrl = $imageUrl; // Присваивание поля
     }
 
     /**
@@ -41,6 +44,7 @@ class ProductEntity
         self::checkPropertyOrSetDefault($object, 'for_women', false);
         self::checkPropertyOrSetDefault($object, 'description');
         self::checkPropertyOrSetDefault($object, 'price', 0);
+        self::checkPropertyOrSetDefault($object, 'imageUrl'); // Убедитесь, что поле imageUrl существует
         return new ProductEntity(
             $object['id'],
             $object['name'],
@@ -48,12 +52,11 @@ class ProductEntity
             $object['for_women'],
             $object['description'],
             $object['price'],
+            $object['imageUrl'] // Передача параметра imageUrl
         );
     }
 
-    private static function checkPropertyOrSetDefault(array &$object,
-                                                            $key,
-                                                            $defaultValue = ''): void
+    private static function checkPropertyOrSetDefault(array &$object, $key, $defaultValue = ''): void
     {
         if (!isset($object[$key])) {
             $object[$key] = $defaultValue;
@@ -65,7 +68,7 @@ class ProductEntity
      */
     public function getSex(): string
     {
-        return $this->for_women ? "Женский" : "Мужской";
+        return $this->for_women ? "да" : "нет";
     }
 
     /**
@@ -116,4 +119,11 @@ class ProductEntity
         return $this->price;
     }
 
+    /**
+     * @return string
+     */
+    public function getImageUrl(): string // Метод для получения imageUrl
+    {
+        return $this->imageUrl;
+    }
 }

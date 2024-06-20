@@ -107,26 +107,27 @@ class DBClass
      * @return ProductEntity[]
      */
     public static function getProductList(): array
-    {
-        try {
-            $sql = "
-            SELECT 
-                product.id,
-                product.name,
-                product_type.name as product_type,
-                for_women,
-                description,
-                price
-            FROM product, product_type
-            WHERE product_type_id = product_type.id";
-            $statement = self::$conn->query($sql);
-            $allProducts = $statement->fetchAll();
-            return self::transformArray($allProducts);
-        } catch (PDOException $e) {
-            echo "Database error: " . $e->getMessage();
-            die();
-        }
+{
+    try {
+        $sql = "
+        SELECT 
+            product.id,
+            product.name,
+            product_type.name as product_type,
+            for_women,
+            description,
+            price,
+            image_url
+        FROM product
+        JOIN product_type ON product_type.id = product.product_type_id";
+        $statement = self::$conn->query($sql);
+        $allProducts = $statement->fetchAll();
+        return self::transformArray($allProducts);
+    } catch (PDOException $e) {
+        echo "Database error: " . $e->getMessage();
+        die();
     }
+}
 
     public static function getProductListByFilter(string $product_type): array
     {

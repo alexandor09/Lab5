@@ -10,7 +10,10 @@
 </head>
 <body>
 <?php
+
 require '../components/header.php';
+
+
 ?>
 <div class="container">
     <?php
@@ -32,7 +35,7 @@ require '../components/header.php';
                 }
                 echo "</select>";
                 echo "
-            <input type='submit' value='Отфильтровать'>
+            <input type='submit' value='Отфильтровать по сложности'>
             ";
             }
             ?>
@@ -84,10 +87,11 @@ require '../components/header.php';
             <table>
                 <tr>
                     <th>Наименование продукта</th>
-                    <th>Тип продукта</th>
-                    <th>Пол</th>
+                    <th>Сложность реализации</th>
+                    <th>Нужна ли комада</th>
                     <th>Описание</th>
-                    <th>Стоимость</th>
+                    <th>Цена</th>
+                    
                   ";
             if (isset($_COOKIE['user_role']) && in_array($_COOKIE['user_role'], $listOfRoles)) {
                 echo "
@@ -109,6 +113,7 @@ require '../components/header.php';
                         <td>" . $prod->getSex() . "</td>
                         <td>" . $prod->getDescription() . "</td>
                         <td>" . $prod->getPrice() . "</td>";
+                        
                 if (isset($_COOKIE['user_role']) && in_array($_COOKIE['user_role'], $listOfRoles)) {
                     echo "
                     <td><input style='max-width:70px;'  type='number' min='1' name='amount' value=1></td>
@@ -124,9 +129,13 @@ require '../components/header.php';
                 ";
             }
             echo "</table>";
+            
             ?>
         </div>
     </div>
 </div>
 </body>
+<?php
+    
+?>
 </html>

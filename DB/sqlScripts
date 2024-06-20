@@ -1,7 +1,3 @@
--- для корректной работы программы откройте postgresSQL и выполните следующие команды, так же измените при необходимости
--- логин и пароль в файле DbConfig.php
-
-
 -- Database: universityDB
 
 -- DROP DATABASE IF EXISTS "universityDB";
@@ -141,3 +137,22 @@ VALUES ('Alice', 'Smith', 'A.'),
 -- Добавление связи групп и студентов
 INSERT INTO group_student (group_id, student_id) VALUES (1, 1), (2, 2);
 
+ALTER TABLE product
+ADD COLUMN image_url VARCHAR(255);
+
+UPDATE product SET image_url = 'images/product1.png' WHERE id = 1;
+UPDATE product SET image_url = 'images/product2.png' WHERE id = 2;
+
+
+
+INSERT INTO product (name, product_type_id, for_women, description, price,image_url) 
+VALUES ('Установка офисных приложений', 1, true, 'Установка операционной системы, антивируса', 140.00, 'image_url'), 
+		('Предоставление серверных мощностей', 3, true, 'Помощь в подборе необходимых комплектующий', 298.00, 'image_url'),
+		('Обновление конфигурации 1С', 2, true, 'Обновление, конфигурации системы', 135.00, 'image_url'),
+		('Предоставление платформы 1С', 3, true, 'Происходит в монопольном режиме', 310.00, 'image_url'),
+		('Написание автоматизированного рабочего места', 2, true, 'Внедрение, доработки', 220.00, 'image_url'),
+		('Сбор и анализ требований для передачи разработчику', 2, false, 'Прямое взаимодействие с заказчиком', 200.00, 'image_url'),
+		('Внедрение маркировки', 3, true, 'Новая ГОСТ по маркировке продукции', 450.00, 'image_url'),
+       ('Сборка и установка компьютера', 2, false, 'Подбор и замена комплектующих', 150.00,'image_url');
+
+       
