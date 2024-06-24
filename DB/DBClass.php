@@ -103,6 +103,39 @@ class DBClass
         }
     }
 
+    public static function getUserOrders($userId)
+{
+    try {
+        $sql = "
+        SELECT 
+            o.id as order_id,
+            o.create_date,
+            o.approved,
+            o.confirmed,
+            oi.product_id,
+            oi.amount,
+            p.name as product_name,
+            p.price as product_price
+        FROM 
+            public.order o
+        JOIN 
+            public.order_info oi ON o.id = oi.order_id
+        JOIN 
+            public.product p ON oi.product_id = p.id
+        WHERE 
+            o.customer_id = :userId
+        ORDER BY 
+            o.create_date DESC";
+        $stmt = self::$conn->prepare($sql);
+        $stmt->bindValue(':userId', $userId);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Database error: " . $e->getMessage();
+        return array();
+    }
+}
+
     /**
      * @return ProductEntity[]
      */
@@ -269,4 +302,58 @@ class DBClass
             return array();
         }
     }
+    public static function confirmOrder(int $orderId): bool
+    {
+        try {
+            $sql = "UPDATE public.order SET confirmed = TRUE WHERE id = :orderId";
+            $stmt = self::$conn->prepare($sql);
+            $stmt->bindValue(':orderId', $orderId, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Database error: " . $e->getMessage();
+            return false;
+        }
+    }
+public static function unconfirmOrder(int $orderId): bool
+{
+    try {
+        $sql = "UPDATE public.order SET confirmed = FALSE WHERE id = :orderId";
+        $stmt = self::$conn->prepare($sql);
+        $stmt->bindValue(':orderId', $orderId, PDO::PARAM_INT);
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        echo "Database error: " . $e->getMessage();
+        return false;
+    }
+}
+public static function getAllOrders(): array   // для админки отображение заказов
+{
+{
+    try {
+        $sql = "
+        SELECT 
+            o.id as order_id,
+            o.create_date,
+            o.confirmed,
+            p.name as product_name,
+            oi.amount,
+            p.price as product_price
+        FROM 
+            public.order o
+        JOIN 
+            public.order_info oi ON o.id = oi.order_id
+        JOIN 
+            public.product p ON oi.product_id = p.id
+        ORDER BY 
+            o.id, p.name
+        ";
+        $stmt = self::$conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Database error: " . $e->getMessage();
+        return [];
+    }
+}
+}
 }
